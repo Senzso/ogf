@@ -13,7 +13,7 @@ export default function LandingPage() {
 
       <header className="container mx-auto px-4 py-6 relative max-w-7xl">
         <Image
-          src="https://i.postimg.cc/QtCgjTZg/transparent.png"
+          src="/transparent.png"
           alt="OGF Logo"
           width={80}
           height={80}
@@ -72,7 +72,7 @@ export default function LandingPage() {
             <div className="relative lg:h-[600px] flex items-center justify-center">
               <div className="absolute inset-0 bg-gradient-to-b from-[#d0ed56]/20 to-transparent rounded-full blur-3xl" />
               <Image
-                src="https://i.postimg.cc/L4BPGDPd/mokcup.png"
+                src="/mockup.png"
                 alt="OGF App Mockup"
                 width={400}
                 height={800}
