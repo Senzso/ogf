@@ -1,0 +1,6 @@
+@layer utilities {
+  .shadow-glow {
+    box-shadow: 0 0 15px 5px rgba(208, 237, 86, 0.3);
+  }
+}
+

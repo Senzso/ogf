@@ -1,0 +1,125 @@
+import { useState, useRef, useEffect } from 'react';
+import Image from 'next/image';
+import Link from 'next/link';
+import { ArrowRight } from 'react-feather';
+// Assuming Button component is available.  If not, you'll need to import or define it.
+//  For this example, I'll assume a simple functional component.
+const Button = ({ asChild, size, variant, className, children }) => (
+  <button className={`px-6 py-3 rounded-lg ${className}`} >{children}</button>
+);
+
+
+export default function LandingPage() {
+  return (
+    <main className="container mx-auto px-4 max-w-7xl">
+      <div className="min-h-screen bg-gradient-to-br from-[#0b4f42] to-[#0a2924] font-space-grotesk">
+        <Image 
+          src="https://i.postimg.cc/L4BPGDPd/mokcup.png"
+          alt="OGF App Mockup" 
+          width={400}
+          height={800}
+          className="relative z-10"
+          priority
+        />
+        <WhyChooseSection />
+        <HowItWorksSection />
+        <section id="simple-and-powerful" className="py-20">
+          <div className="text-center mb-16">
+            <h2 className="text-4xl font-bold mb-6 text-[#d2f8c6]">Simple & Powerful</h2>
+            <p className="text-xl text-white/80">Just input a contract address, and we'll verify if it's the real OG token</p>
+          </div>
+          {/* Rest of the section content */}
+          <div className="text-center">
+            <Button asChild size="lg" variant="outline" className="bg-white/5 border-white/10 text-white hover:bg-white/10 transition-all">
+              <Link href="#why-choose-ogf">
+                Learn More <ArrowRight className="ml-2" />
+              </Link>
+            </Button>
+          </div>
+        </section>
+      </div>
+    </main>
+  );
+}
+
+export function WhyChooseSection() {
+  const [activeIndex, setActiveIndex] = useState(0);
+  const [benefits, setBenefits] = useState([
+    {
+      title: 'User-Friendly Interface',
+      description: 'Intuitive design for seamless trading experience.',
+    },
+    {
+      title: 'Real-time Data',
+      description: 'Stay ahead with up-to-the-second market information.',
+    },
+    {
+      title: 'Secure & Reliable',
+      description: 'Your funds and data are always protected.',
+    },
+  ]);
+
+  const sectionRef = useRef(null);
+
+  useEffect(() => {
+    const handleResize = () => {
+      if (sectionRef.current) {
+        const sectionWidth = sectionRef.current.offsetWidth;
+        const interval = sectionWidth / benefits.length;
+        const currentIndex = Math.floor(window.innerWidth / interval);
+        setActiveIndex(currentIndex % benefits.length);
+      }
+    };
+
+    window.addEventListener('resize', handleResize);
+    handleResize();
+
+    return () => window.removeEventListener('resize', handleResize);
+  }, [benefits.length]);
+
+
+  return (
+    <section id="why-choose-ogf" ref={sectionRef} className="py-20">
+      <h2 className="text-4xl font-bold mb-16 text-[#d2f8c6] text-center">Why Choose OGF?</h2>
+      <div className="bg-[#0a2924]/40 backdrop-blur-sm rounded-3xl px-4 py-6">
+        <div className="grid md:grid-cols-2 gap-12 items-center">
+          <div className="space-y-6 pl-6">
+            <h3 className="text-3xl font-bold text-[#d2f8c6]">Built by traders, for traders</h3>
+            <p className="text-xl text-white/80">
+              We understand the challenges of navigating the Solana ecosystem. That's why we've created a tool that we would use ourselves - reliable, fast, and always accurate.
+            </p>
+          </div>
+          <div className="relative h-[400px] flex items-center justify-center">
+            {benefits.map((benefit, index) => (
+              <div
+                key={index}
+                className={`absolute inset-0 transition-opacity duration-500 ${
+                  index === activeIndex ? 'opacity-100' : 'opacity-0'
+                } flex flex-col items-center justify-center text-center`}
+              >
+                <div className="text-[#d0ed56] text-9xl font-bold opacity-20 mb-4">
+                  {index + 1}
+                </div>
+                <h4 className="text-2xl font-bold mb-2 text-[#d2f8c6]">{benefit.title}</h4>
+                <p className="text-lg text-white/80 max-w-sm">{benefit.description}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
+    </section>
+  )
+}
+
+export function HowItWorksSection() {
+  return (
+    <section className="py-20">
+      <h2 className="text-4xl font-bold mb-6 text-[#d2f8c6] text-center">How it Works</h2>
+      <div className="bg-[#0a2924]/40 backdrop-blur-sm rounded-3xl px-8 py-12">
+        {/* Add your How it Works content here */}
+        <p>This section will explain how the application works.</p>
+      </div>
+    </section>
+  );
+}
+
