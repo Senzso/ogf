@@ -4,38 +4,44 @@ import { useState, useEffect, useRef } from "react"
 
 export function WhyChooseSection() {
   const [activeIndex, setActiveIndex] = useState(0)
-  const [benefits] = useState([
-    {
-      title: "User-Friendly Interface",
-      description: "Intuitive design for seamless trading experience.",
-    },
-    {
-      title: "Real-time Data",
-      description: "Stay ahead with up-to-the-second market information.",
-    },
-    {
-      title: "Secure & Reliable",
-      description: "Your funds and data are always protected.",
-    },
-  ])
+  const sectionRef = useRef<HTMLElement>(null)
 
-  const sectionRef = useRef(null)
+  const benefits = [
+    {
+      title: "24/7 Available",
+      description: "Always online, ready to verify tokens instantly",
+    },
+    {
+      title: "100% Accurate",
+      description: "Zero false positives in token verification",
+    },
+    {
+      title: "Lightning Fast",
+      description: "Get results in under 2 seconds",
+    },
+    {
+      title: "Early Warning",
+      description: "Instant alerts for suspicious tokens",
+    },
+  ]
 
   useEffect(() => {
-    const handleResize = () => {
+    const handleScroll = () => {
       if (sectionRef.current) {
-        const sectionWidth = sectionRef.current.offsetWidth
-        const interval = sectionWidth / benefits.length
-        const currentIndex = Math.floor(window.innerWidth / interval)
-        setActiveIndex(currentIndex % benefits.length)
+        const sectionTop = sectionRef.current.offsetTop
+        const sectionHeight = sectionRef.current.offsetHeight
+        const scrollPosition = window.scrollY + window.innerHeight / 2
+
+        if (scrollPosition > sectionTop && scrollPosition < sectionTop + sectionHeight) {
+          const progress = (scrollPosition - sectionTop) / sectionHeight
+          setActiveIndex(Math.floor(progress * benefits.length))
+        }
       }
     }
 
-    window.addEventListener("resize", handleResize)
-    handleResize()
-
-    return () => window.removeEventListener("resize", handleResize)
-  }, [benefits.length])
+    window.addEventListener("scroll", handleScroll)
+    return () => window.removeEventListener("scroll", handleScroll)
+  }, [])
 
   return (
     <section id="why-choose-ogf" ref={sectionRef} className="py-20">
